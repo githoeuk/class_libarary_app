@@ -101,7 +101,7 @@ public class BorrowDAO2 {
                         .id(rs.getInt("id"))
                         .book_id(rs.getInt("book_id"))
                         .student_id(rs.getInt("student_id"))
-                        .borrowDate(rs.getDate("borrow_date"))
+                        //.borrowDate(rs.getDate("borrow_date"))
                         .build();
             }
         }
