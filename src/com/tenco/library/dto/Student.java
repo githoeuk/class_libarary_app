@@ -15,4 +15,10 @@ public class Student {
     private String name;
     private String student_Id;
 
+    @Builder
+    public Student(String name, String student_id){
+        this.name = name;
+        this.student_Id = student_id;
+    }
+
 }
