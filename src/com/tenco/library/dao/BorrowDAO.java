@@ -141,6 +141,7 @@ public class BorrowDAO {
      * @param bookId
      * @param StudentId : student 테이블 - pk값
      */
+
     public void returnBook(int bookId, int StudentId) throws SQLException {
         // 트랜잭션 시작
         Connection conn = null;
@@ -174,18 +175,19 @@ public class BorrowDAO {
             String updateBorrowSql = """
                     UPDATE borrows SET return_date = ? WHERE id = ?
                     """;
-            try (PreparedStatement updateBorrowPStmt = conn.prepareStatement(updateBorrowSql)){
-                updateBorrowPStmt.setDate(1,Date.valueOf(LocalDate.now()));
-                updateBorrowPStmt.setInt(2,borrowID);
+            try (PreparedStatement updateBorrowPStmt = conn.prepareStatement(updateBorrowSql)) {
+                updateBorrowPStmt.setDate(1, Date.valueOf(LocalDate.now()));
+                updateBorrowPStmt.setInt(2, borrowID);
                 updateBorrowPStmt.executeUpdate();
             } // end of updateBorrow
             // 3. 도서 상태 변경 (대출 가능 )
             String updateBookSql = """
                     UPDATE books SET available = TRUE WHERE id = ?
                     """;
-            try(PreparedStatement updateBookPstmt = conn.prepareStatement(updateBookSql)){
-                updateBookPstmt.setInt(1,bookId);
+            try (PreparedStatement updateBookPstmt = conn.prepareStatement(updateBookSql)) {
+                updateBookPstmt.setInt(1, bookId);
                 updateBookPstmt.executeUpdate();
+
             } // end of updateBook
 
             // 모두 성공 --> commit 처리
