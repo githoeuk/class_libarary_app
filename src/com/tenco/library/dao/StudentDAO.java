@@ -1,9 +1,7 @@
 package com.tenco.library.dao;
 
-
 import com.tenco.library.dto.Student;
 import com.tenco.library.util.DatabaseUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,7 +104,7 @@ public class StudentDAO {
         // builder패턴 -- 직관성이 뛰어남
         Student student = Student
                 .builder()
-                .student_id("202612345")
+                .student_Id("202612345")
                 .name("고길동")
                 .build();
         StudentDAO studentDAO = new StudentDAO();
@@ -123,3 +121,4 @@ public class StudentDAO {
 
     } // end of main
 } // end of StudentDAO
+
