@@ -15,7 +15,7 @@ public class DatabaseUtil {
 
     public static Connection getConnection() throws SQLException {
 
-        // 효과 만들어 보기 ...
+        // 효과 만들어 보기 (...)
         Thread thread = new Thread(() -> {
             System.out.print("Connecting to database");
             for (int i = 0; i < 5; i++) {
