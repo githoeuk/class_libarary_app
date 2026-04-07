@@ -206,21 +206,4 @@ public class BorrowDAO {
         } // end of try_finally
 
     } // end of returnBook
-
-
-    // 테스트 코드 작성
-    public static void main(String[] args) {
-        BorrowDAO borrowDAO = new BorrowDAO();
-        try {
-
-            //borrowDAO.borrowBook(3, 1);
-//            List<Borrow> borrowList = borrowDAO.getBorrowsBooks();
-//            System.out.println(borrowList);
-            borrowDAO.returnBook(1, 1);
-        } catch (SQLException e) {
-            System.out.println("----------------------");
-            System.out.println("오류 발생 : " + e.getMessage());
-        }
-
-    } // end of main
 }
