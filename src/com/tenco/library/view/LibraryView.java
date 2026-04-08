@@ -153,7 +153,6 @@ public class LibraryView {
                         b.getTitle(),
                         b.getAuthor(),
                         b.isAvailable() ? "대출 가능" : "대출 중");
-
             }
         }
 
