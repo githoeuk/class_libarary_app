@@ -2,17 +2,19 @@ package com.tenco.library.view;
 
 import com.tenco.library.dto.Book;
 import com.tenco.library.dto.Borrow;
+import com.tenco.library.dto.Borrow2;
 import com.tenco.library.dto.Student;
 import com.tenco.library.service.LibraryService;
+import com.tenco.library.service.LibraryService2;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 // 사용자 입출력을 처리하는 View 클래스
-public class LibraryView {
+public class LibraryView2 {
 
-    private final LibraryService service = new LibraryService();
+    private final LibraryService2 service2 = new LibraryService2();
     private final Scanner sc = new Scanner(System.in);
 
     // 메모리상에 저장. 종료 시 사라짐
@@ -104,7 +106,7 @@ public class LibraryView {
             return;
         }
         // 예외는 start매서드에 처리하도록 한다.
-        Student student = service.authenticateStudent(student_id);
+        Student student = service2.authenticateStudent(student_id);
         if (student == null) {
             System.out.println("존재하지 않는 학번입니다.");
         } else {
@@ -128,20 +130,21 @@ public class LibraryView {
             System.out.println("유효하지 않는 학생ID입니다.");
         }
 
-        service.returnBook(bookId,studentId);
+        service2.returnBook(bookId,studentId);
         System.out.println("정상적으로 반납되었습니다.");
     } // end of returnBook
 
     // 7. 대출 도서 조회
     private void listBorrowedBooks() throws SQLException {
-        List<Borrow> borrowList = service.getBorrowsBooks();
-        if (borrowList.isEmpty()){
+        List<Borrow2> borrowList2 = service2.getBorrowsBooks();
+        if (borrowList2.isEmpty()){
             System.out.println("대출된 책이 없습니다.");
         }else {
             System.out.println("=========================");
-            for (Borrow b : borrowList){
-                System.out.printf("책ID : %3d | 학생ID : %7d | 대출날짜 : %15s",
+            for (Borrow2 b : borrowList2){
+                System.out.printf("책ID : %d | 책이름 : %s | 학생ID : %d | 대출날짜 : %15s",
                         b.getBook_id(),
+                        b.getTitle(),
                         b.getStudent_id(),
                         b.getBorrowDate());
                 System.out.println();
@@ -163,7 +166,7 @@ public class LibraryView {
             System.out.print("유효하지 않는 도서ID입니다.");
         }
 
-        service.borrowBook(bookId,studentId);
+        service2.borrowBook(bookId,studentId);
         System.out.println("정삭적으로 대출되었습니다.");
 
         System.out.println();
@@ -172,7 +175,7 @@ public class LibraryView {
 
     // 5. 학생 목록
     private void listStudents() throws SQLException {
-        List<Student> studentList = service.getAllStudent();
+        List<Student> studentList = service2.getAllStudent();
         if (studentList.isEmpty()) {
             System.out.println("등록된 학생이 없습니다.");
         } else {
@@ -202,7 +205,7 @@ public class LibraryView {
                 .student_Id(studentId)
                 .build();
 
-        service.addStudent(student);
+        service2.addStudent(student);
         System.out.println("학생 등록 완료 " + studentName);
     } // end of addStudent
 
@@ -214,7 +217,7 @@ public class LibraryView {
             System.out.println("검색어를 입력하세요");
             return;
         }
-        List<Book> bookList = service.searchBooksByTitle(title);
+        List<Book> bookList = service2.searchBooksByTitle(title);
         if (bookList.isEmpty()) {
             System.out.println("검색 결과가 없습니다.");
         } else {
@@ -233,7 +236,7 @@ public class LibraryView {
 
     // 2번 도서 목록
     private void listBooks() throws SQLException {
-        List<Book> bookList = service.getAllBooks();
+        List<Book> bookList = service2.getAllBooks();
         if (bookList.isEmpty()) {
             System.out.println("등록된 도서가 없습니다.");
         } else {
@@ -287,7 +290,7 @@ public class LibraryView {
                 .available(true)
                 .build();
 
-        service.addBook(book);
+        service2.addBook(book);
         System.out.println("도서 추가 : " + title);
     }
 

@@ -1,6 +1,6 @@
 package com.tenco.library.dao;
 
-import com.tenco.library.dto.Borrow;
+import com.tenco.library.dto.Borrow2;
 import com.tenco.library.util.DatabaseUtil;
 
 import java.sql.*;
@@ -92,30 +92,34 @@ public class BorrowDAO2 {
 
     // 2. 현재 대출 중인 기록 조회
 
-    public List<Borrow> getBorrowsBooks() throws SQLException {
+    public List<Borrow2> getBorrowsBooks() throws SQLException {
 
-        List<Borrow> borrowList = new ArrayList<>();
+        List<Borrow2> borrowList2 = new ArrayList<>();
         String sql = """
-                SELECT * FROM borrows WHERE return_date IS NULL ORDER BY borrow_date
+                SELECT * 
+                FROM borrows bs
+                JOIN books b ON bs.book_id = b.id
+                WHERE return_date IS NULL ORDER BY borrow_date;
                 """;
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement borrowListPstmt = conn.prepareStatement(sql);
              ResultSet rs = borrowListPstmt.executeQuery()
         ) {
             while (rs.next()) {
-                Borrow borrow = Borrow.builder()
+                Borrow2 borrow = Borrow2.builder()
                         .id(rs.getInt("id"))
                         .book_id(rs.getInt("book_id"))
                         .student_id(rs.getInt("student_id"))
+                        .title(rs.getString("title"))
                         .borrowDate(rs.getDate("borrow_date") != null
                                 ? rs.getDate("borrow_date").toLocalDate()
                                 : null)
                         .build();
-                borrowList.add(borrow);
+                borrowList2.add(borrow);
             } // end of while
         } // end of borrowListPstmt
 
-        return borrowList;
+        return borrowList2;
 
     } // end of getBorrowsBooks
 
