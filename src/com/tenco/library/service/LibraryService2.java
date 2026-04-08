@@ -7,19 +7,20 @@ package com.tenco.library.service;
 
 import com.tenco.library.dao.BookDAO;
 import com.tenco.library.dao.BorrowDAO;
+import com.tenco.library.dao.BorrowDAO2;
 import com.tenco.library.dao.StudentDAO;
 import com.tenco.library.dto.Book;
 import com.tenco.library.dto.Borrow;
+import com.tenco.library.dto.Borrow2;
 import com.tenco.library.dto.Student;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class LibraryService {
+public class LibraryService2 {
     private final BookDAO bookDAO = new BookDAO();
     private final StudentDAO studentDAO = new StudentDAO();
-    private final BorrowDAO borrowDAO = new BorrowDAO();
+    private final BorrowDAO2 borrowDAO2 = new BorrowDAO2();
 
     // 만약 화면단에 도서 추가 기능 요청 (화면단 코드 ) 발생 한다면
     // 서비스 단에서는 사용자가 입력한 데이터가 유효한지 유효성 검사를 진행.
@@ -94,7 +95,7 @@ public class LibraryService {
         if (bookId <= 0 || studentId <= 0) {
             throw new SQLException("유효한 도서ID , 학생 ID를 입력해주세요 ");
         }
-        borrowDAO.borrowBook(bookId, studentId);
+        borrowDAO2.borrowBook(bookId, studentId);
     } // end of borrowBook
 
     // 7. 도서 반납 처리
@@ -110,12 +111,12 @@ public class LibraryService {
         if (bookId <= 0 || studentId <= 0) {
             throw new SQLException("유효한 도서ID , 학생 ID를 입력해주세요 ");
         }
-        borrowDAO.returnBook(bookId, studentId);
+        borrowDAO2.returnBook(bookId, studentId);
     }
 
     // 8. 대출 도서 조회
-    public List<Borrow> getBorrowsBooks() throws SQLException {
-        return borrowDAO.getBorrowsBooks();
+    public List<Borrow2> getBorrowsBooks() throws SQLException {
+        return borrowDAO2.getBorrowsBooks();
     }
 
     // Todo - 관리자 기능 추가 예정
