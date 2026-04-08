@@ -1,5 +1,6 @@
 package com.tenco.library.view;
 
+import com.tenco.library.dto.Admin;
 import com.tenco.library.dto.Book;
 import com.tenco.library.dto.Borrow;
 import com.tenco.library.dto.Student;
@@ -19,6 +20,9 @@ public class LibraryView {
     private Integer currentStudentId = null; // 로그인 중인 학생의 DB ID 저장
     private String currentStudentName = null; // 로그인 중인 학생 이름
 
+    private Integer currentAdminId = null; // 추가 - 관리자 Db id(PK)
+    private String currentAdminName = null; // 추가 - 관리자 이름
+
     // 프로그램 메인 루프
     public void start() {
         System.out.println("도서 관리 시스템 시작....");
@@ -30,6 +34,11 @@ public class LibraryView {
             try {
                 switch (ch) {
                     case 1:
+                        // 관리자 인가처리 필요
+                        if (currentAdminId == null){
+                            System.out.println("관리자만 도서를 추가할 수 있습니다.");
+                            break;
+                        }
                         addBook();
                         break;
                     case 2:
@@ -39,9 +48,17 @@ public class LibraryView {
                         searchBooks();
                         break;
                     case 4:
+                        if (currentAdminId == null){
+                            System.out.println("관리자만 학생을 등록할 수 있습니다.");
+                            break;
+                        }
                         addStudent();
                         break;
                     case 5:
+                        if (currentAdminId == null){
+                            System.out.println("관리자만 학생 목록을 조회할 수 있습니다.");
+                            break;
+                        }
                         listStudents();
                         break;
                     case 6:
@@ -63,6 +80,9 @@ public class LibraryView {
                         System.out.println("프로그램을 종료합니다.");
                         sc.close();
                         return; // while문 종료
+                    case 12:
+                        adminLogin(); // 관리자 로그인
+                        break;
                     default:
                         System.out.println("1~11 사이의 숫자를 입력하세요");
 
@@ -80,12 +100,16 @@ public class LibraryView {
 
     // 10. 로그아웃
     private void logout() {
-        if (currentStudentId == null) {
+        if (currentStudentId == null && currentAdminId == null) {
             System.out.println("현재 로그인 상태가 아닙니다.");
         } else {
-            System.out.println(currentStudentName + "님이 로그아웃되었습니다");
+            String name = currentStudentId != null ? currentStudentName : currentAdminName;
+            System.out.println(name + "님이 로그아웃되었습니다");
             currentStudentId = null;
             currentStudentName = null;
+            currentAdminId = null;
+            currentAdminName = null;
+
         }
 
     } // end of logout
@@ -119,27 +143,27 @@ public class LibraryView {
     private void returnBooks() throws SQLException {
         System.out.print("반납할 책 번호를 입력하세요 : ");
         int bookId = Integer.parseInt(sc.nextLine().trim());
-        if (bookId <= 0){
+        if (bookId <= 0) {
             System.out.println("유효하지 않는 도서ID입니다.");
         }
         System.out.print("반납 학생의 ID(PK)를 입력하세요 : ");
         int studentId = Integer.parseInt(sc.nextLine().trim());
-        if (studentId <= 0){
+        if (studentId <= 0) {
             System.out.println("유효하지 않는 학생ID입니다.");
         }
 
-        service.returnBook(bookId,studentId);
+        service.returnBook(bookId, studentId);
         System.out.println("정상적으로 반납되었습니다.");
     } // end of returnBook
 
     // 7. 대출 도서 조회
     private void listBorrowedBooks() throws SQLException {
         List<Borrow> borrowList = service.getBorrowedBooks();
-        if (borrowList.isEmpty()){
+        if (borrowList.isEmpty()) {
             System.out.println("대출된 책이 없습니다.");
-        }else {
+        } else {
             System.out.println("=========================");
-            for (Borrow b : borrowList){
+            for (Borrow b : borrowList) {
                 System.out.printf("책ID : %3d | 학생ID : %7d | 대출날짜 : %15s",
                         b.getBook_id(),
                         b.getStudent_id(),
@@ -154,16 +178,16 @@ public class LibraryView {
 
         System.out.print("대여할 책 번호를 입력하세요 : ");
         int bookId = Integer.parseInt(sc.nextLine().trim());
-        if (bookId <= 0){
+        if (bookId <= 0) {
             System.out.println("유효하지 않는 도서ID입니다.");
         }
         System.out.println("대여할 학생의 ID(pk)를 입력하세요 : ");
         int studentId = Integer.parseInt(sc.nextLine().trim());
-        if (studentId <= 0){
+        if (studentId <= 0) {
             System.out.print("유효하지 않는 도서ID입니다.");
         }
 
-        service.borrowBook(bookId,studentId);
+        service.borrowBook(bookId, studentId);
         System.out.println("정삭적으로 대출되었습니다.");
 
         System.out.println();
@@ -306,6 +330,7 @@ public class LibraryView {
         System.out.println("9. 로그인");
         System.out.println("10. 로그아웃");
         System.out.println("11. 종료");
+        System.out.println("12. 관리자 로그인");
 
     }
 
@@ -320,5 +345,37 @@ public class LibraryView {
             }
         }
     } // end of readInt
+
+    // 관리자 인증(로그인) 처리
+    public void adminLogin() throws SQLException {
+        // 1.누구도 로그인 하지 않았을 때 // 2.학생이 로그인 했을 때 // 3. 학생이 로그인 했을 때
+        if (currentStudentId != null || currentAdminId != null) {
+            System.out.println("이미 로그인 중입니다. 먼저 로그아웃 해주세요 ");
+            return;
+        }
+
+        System.out.print("관리자 ID : ");
+        String adminId = sc.nextLine().trim();
+        if (adminId.trim().isEmpty()) {
+            System.out.println("관리자 ID를 입력해주세요 ");
+            return;
+        }
+        System.out.print("관리자 PW : ");
+        String password = sc.nextLine().trim();
+        if (password.trim().isEmpty()) {
+            System.out.println("관리자 password를 입력해주세요 ");
+            return;
+        }
+
+        Admin admin = service.authenticateAdmin(adminId, password);
+        if (admin == null) {
+            System.out.println("관리자 ID 또는 비밀번호가 틀렸습니다.");
+        } else {
+            currentAdminId = admin.getId();
+            currentAdminName = admin.getName();
+            System.out.println(currentAdminName + "관리자님 , 환영합니다.");
+        }
+    } // end of adminLogin
+
 
 } // end of class
