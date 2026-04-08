@@ -15,30 +15,11 @@ public class DatabaseUtil {
 
     public static Connection getConnection() throws SQLException {
 
-        // 효과 만들어 보기 (...)
-        Thread thread = new Thread(() -> {
-            System.out.print("Connecting to database");
-            for (int i = 0; i < 5; i++) {
-                System.out.print(".");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            } // end of for
-        }); // end of Thread
-
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         Connection connection = DriverManager.getConnection(URL,DB_USER,PASSWORD);
         System.out.println();
-        System.out.println(connection.getMetaData().getDatabaseProductName());
-        System.out.println(connection.getMetaData().getDatabaseProductVersion());
+//        System.out.println(connection.getMetaData().getDatabaseProductName());
+//        System.out.println(connection.getMetaData().getDatabaseProductVersion());
         return connection;
 
     }// end of getConnection
