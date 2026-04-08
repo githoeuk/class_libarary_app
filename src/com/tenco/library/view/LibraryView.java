@@ -134,7 +134,7 @@ public class LibraryView {
 
     // 7. 대출 도서 조회
     private void listBorrowedBooks() throws SQLException {
-        List<Borrow> borrowList = service.getBorrowsBooks();
+        List<Borrow> borrowList = service.getBorrowedBooks();
         if (borrowList.isEmpty()){
             System.out.println("대출된 책이 없습니다.");
         }else {
@@ -172,7 +172,7 @@ public class LibraryView {
 
     // 5. 학생 목록
     private void listStudents() throws SQLException {
-        List<Student> studentList = service.getAllStudent();
+        List<Student> studentList = service.getAllStudents();
         if (studentList.isEmpty()) {
             System.out.println("등록된 학생이 없습니다.");
         } else {
