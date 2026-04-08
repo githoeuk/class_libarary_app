@@ -1,13 +1,11 @@
 package com.tenco.library;
 
-import com.tenco.library.view.LibraryView;
-
 public class Main {
 
     public static void main(String[] args) {
 
-        LibraryView libraryView = new LibraryView();
-        libraryView.start();
+        LibraryView2 libraryView2 = new LibraryView2();
+        libraryView2.start();
 
     }
 }

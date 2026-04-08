@@ -9,6 +9,7 @@ import com.tenco.library.dao.BookDAO;
 import com.tenco.library.dao.BorrowDAO;
 import com.tenco.library.dao.StudentDAO;
 import com.tenco.library.dto.Book;
+import com.tenco.library.dto.Borrow;
 import com.tenco.library.dto.Student;
 
 import java.sql.Connection;
@@ -66,7 +67,7 @@ public class LibraryService {
         return studentDAO.getAllStudents();
     }
 
-    // 학번이 유요한지 조회(로드인 처리)
+    // 5. 학번이 유요한지 조회(로드인 처리)
 
     /***
      *
@@ -80,7 +81,7 @@ public class LibraryService {
         return studentDAO.authenticateStudent(studentId);
     } // end of authenticateStudent
 
-    // 도서 대출 요청
+    // 6. 도서 대출 요청
 
     /**
      *
@@ -96,7 +97,7 @@ public class LibraryService {
         borrowDAO.borrowBook(bookId, studentId);
     } // end of borrowBook
 
-    // 도서 반납 처리
+    // 7. 도서 반납 처리
 
     /**
      *
@@ -110,6 +111,11 @@ public class LibraryService {
             throw new SQLException("유효한 도서ID , 학생 ID를 입력해주세요 ");
         }
         borrowDAO.returnBook(bookId, studentId);
+    }
+
+    // 8. 대출 도서 조회
+    public List<Borrow> getBorrowsBooks() throws SQLException {
+        return borrowDAO.getBorrowsBooks();
     }
 
     // Todo - 관리자 기능 추가 예정
