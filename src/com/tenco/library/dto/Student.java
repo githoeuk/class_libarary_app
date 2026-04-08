@@ -13,12 +13,12 @@ public class Student {
 
     private int id;
     private String name;
-    private String student_Id;
+    private String studentId;
 
     @Builder
     public Student(String name, String student_id){
         this.name = name;
-        this.student_Id = student_id;
+        this.studentId = student_id;
     }
 
 }

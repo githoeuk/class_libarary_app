@@ -22,7 +22,7 @@ public class StudentDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             pstmt.setString(1, student.getName());
-            pstmt.setString(2, student.getStudent_Id());
+            pstmt.setString(2, student.getStudentId());
             pstmt.executeUpdate();
 
         } // end of try
@@ -92,7 +92,7 @@ public class StudentDAO {
         return Student.builder()
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
-                .student_Id(rs.getString("student_id"))
+                .studentId(rs.getString("student_id"))
                 .build();
     }
 
@@ -104,7 +104,7 @@ public class StudentDAO {
         // builder패턴 -- 직관성이 뛰어남
         Student student = Student
                 .builder()
-                .student_Id("202612345")
+                .studentId("202612345")
                 .name("고길동")
                 .build();
         StudentDAO studentDAO = new StudentDAO();
